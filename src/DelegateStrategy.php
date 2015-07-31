@@ -28,14 +28,14 @@ namespace Caridea\Acl;
 class DelegateStrategy implements Strategy
 {
     /**
-     * @var SplFixedArray<Loader> The loaders to consult
+     * @var SplFixedArray<\Caridea\Acl\Loader> The loaders to consult
      */
     private $loaders;
 
     /**
      * Creates a new DelegateStrategy.
      *
-     * @param Loader[] $loaders An array of Loaders to use
+     * @param \Caridea\Acl\Loader[] $loaders An array of Loaders to use
      * @throws \InvalidArgumentException if an entry in `loaders` isn't a `Loader`
      */
     public function __construct(array $loaders)
@@ -51,11 +51,11 @@ class DelegateStrategy implements Strategy
     /**
      * Loads the ACL for a Resource.
      *
-     * @param Resource $resource The `Resource` whose ACL will be loaded
-     * @param Subject[] $subjects An array of `Subject`s
-     * @param Service $service The calling service (to load parent ACLs)
-     * @return Acl The loaded ACL
-     * @throws Exception\Unloadable If the resource provided is invalid
+     * @param \Caridea\Acl\Resource $resource The `Resource` whose ACL will be loaded
+     * @param \Caridea\Acl\Subject[] $subjects An array of `Subject`s
+     * @param \Caridea\Acl\Service $service The calling service (to load parent ACLs)
+     * @return \Caridea\Acl\Acl The loaded ACL
+     * @throws \Caridea\Acl\Exception\Unloadable If the resource provided is invalid
      */
     public function load(Resource $resource, array $subjects, Service $service)
     {

@@ -28,7 +28,7 @@ namespace Caridea\Acl;
 class Rule
 {
     /**
-     * @var Subject The subject
+     * @var \Caridea\Acl\Subject The subject
      */
     private $subject;
     /**

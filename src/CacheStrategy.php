@@ -28,11 +28,11 @@ namespace Caridea\Acl;
 class CacheStrategy implements Strategy
 {
     /**
-     * @var Acl[] contains the ACLs indexed by Resource and Subjects string
+     * @var \Caridea\Acl\Acl[] contains the ACLs indexed by Resource and Subjects string
      */
     protected $cache = [];
     /**
-     * @var Strategy The actual loading strategy
+     * @var \Caridea\Acl\Strategy The actual loading strategy
      */
     protected $delegate;
     
@@ -49,11 +49,11 @@ class CacheStrategy implements Strategy
     /**
      * Loads the ACL for a Resource.
      *
-     * @param Resource $resource The `Resource` whose ACL will be loaded
-     * @param Subject[] $subjects An array of `Subject`s
-     * @param Service $service The ACL service (to load parent ACLs)
-     * @return Acl The loaded ACL
-     * @throws Exception\Unloadable If the resource provided is invalid
+     * @param \Caridea\Acl\Resource $resource The `Resource` whose ACL will be loaded
+     * @param \Caridea\Acl\Subject[] $subjects An array of `Subject`s
+     * @param \Caridea\Acl\Service $service The ACL service (to load parent ACLs)
+     * @return \Caridea\Acl\Acl The loaded ACL
+     * @throws \Caridea\Acl\Exception\Unloadable If the resource provided is invalid
      * @throws \InvalidArgumentException If the `subjects` argument contains invalid values
      */
     public function load(Resource $resource, array $subjects, Service $service)

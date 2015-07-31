@@ -28,15 +28,15 @@ namespace Caridea\Acl;
 class RuleAcl implements Acl
 {
     /**
-     * @var Acl The parent
+     * @var \Caridea\Acl\Acl The parent
      */
     private $parent;
     /**
-     * @var Resource The resource
+     * @var \Caridea\Acl\Resource The resource
      */
     private $resource;
     /**
-     * @var Subject[] The subjects for which the rules apply
+     * @var \Caridea\Acl\Subject[] The subjects for which the rules apply
      */
     private $subjects;
     /**
@@ -48,8 +48,8 @@ class RuleAcl implements Acl
      * Creates a new RuleAcl.
      *
      * @param \Caridea\Acl\Resource $resource The resource to which this applies
-     * @param Subject[] $subjects An array of `Subject`s the rules cover
-     * @param Rule[] $rules An array of `Rule`s
+     * @param \Caridea\Acl\Subject[] $subjects An array of `Subject`s the rules cover
+     * @param \Caridea\Acl\Rule[] $rules An array of `Rule`s
      * @param \Caridea\Acl\Acl $parent Optional parent ACL
      * @throws \InvalidArgumentException If subjects contains a non-Subject
      *     value, or if rules contains a non-Rule value
@@ -75,7 +75,7 @@ class RuleAcl implements Acl
     /**
      * Determines whether this ACL has rules for all of the provided subjects.
      *
-     * @param Subject[] $subjects a list of subjects
+     * @param \Caridea\Acl\Subject[] $subjects a list of subjects
      * @return bool Whether all subjects are covered
      */
     protected function hasAllSubjects(array $subjects)
@@ -88,7 +88,7 @@ class RuleAcl implements Acl
      *
      * The parent ACL will be consulted if this one has no corresponding rules.
      *
-     * @param Subject[] $subjects A non-empty array of subjects.
+     * @param \Caridea\Acl\Subject[] $subjects A non-empty array of subjects.
      * @param string $verb The verb to test.
      * @return bool True if a subject can perform a verb on this resource
      */
@@ -110,7 +110,7 @@ class RuleAcl implements Acl
     /**
      * Gets the parent ACL.
      *
-     * @return Acl The parent ACL or null
+     * @return \Caridea\Acl\Acl The parent ACL or null
      */
     public function getParent()
     {
@@ -120,7 +120,7 @@ class RuleAcl implements Acl
     /**
      * Gets the Resource for this ACL.
      *
-     * @return Resource The resource for this ACL
+     * @return \Caridea\Acl\Resource The resource for this ACL
      */
     public function getResource()
     {

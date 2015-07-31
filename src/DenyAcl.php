@@ -45,7 +45,7 @@ class DenyAcl implements Acl
     /**
      * Tests whether any of the subjects can perform the provided verb.
      *
-     * @param Subject[] $subjects A non-empty array of subjects.
+     * @param \Caridea\Acl\Subject[] $subjects A non-empty array of subjects.
      * @param string $verb The verb to test.
      * @return bool Always returns false
      */
@@ -57,7 +57,7 @@ class DenyAcl implements Acl
     /**
      * Gets the parent ACL.
      *
-     * @return Acl The parent ACL or null
+     * @return \Caridea\Acl\Acl The parent ACL or null
      */
     public function getParent()
     {
@@ -67,7 +67,7 @@ class DenyAcl implements Acl
     /**
      * Gets the Resource for this ACL.
      *
-     * @return Resource The resource for this ACL
+     * @return \Caridea\Acl\Resource The resource for this ACL
      */
     public function getResource()
     {

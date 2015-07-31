@@ -75,6 +75,7 @@ class Service
         try {
             return $this->get($resource, $subjects)->can($subjects, $verb);
         } catch (\Exception $ex) {
+            // just return false below
         }
         return false;
     }

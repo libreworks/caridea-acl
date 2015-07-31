@@ -35,7 +35,7 @@ interface Acl
      *
      * The parent ACL will be consulted if this one has no corresponding rules.
      *
-     * @param Subject[] $subjects A non-empty array of subjects.
+     * @param \Caridea\Acl\Subject[] $subjects A non-empty array of subjects.
      * @param string $verb The verb to test.
      * @return bool True if a subject can perform a verb on this resource
      */
@@ -44,14 +44,14 @@ interface Acl
     /**
      * Gets the parent ACL.
      *
-     * @return Acl The parent ACL or null
+     * @return \Caridea\Acl\Acl The parent ACL or null
      */
     public function getParent();
     
     /**
      * Gets the Resource for this ACL.
      *
-     * @return Resource The resource for this ACL
+     * @return \Caridea\Acl\Resource The resource for this ACL
      */
     public function getResource();
 }
