@@ -5,6 +5,10 @@ Caridea is a miniscule PHP application library. This shrimpy fellow is what you'
 
 This is its access control component. You can create lists of permissions from any source you wish.
 
+[![Build Status](https://travis-ci.org/libreworks/caridea-acl.svg)](https://travis-ci.org/libreworks/caridea-acl)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/libreworks/caridea-acl/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/libreworks/caridea-acl/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/libreworks/caridea-acl/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/libreworks/caridea-acl/?branch=master)
+
 ## Installation
 
 You can install this library using Composer:
