@@ -56,7 +56,7 @@ class DelegateStrategyTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Caridea\Acl\DelegateStrategy::__construct
      * @covers Caridea\Acl\DelegateStrategy::load
-     */    
+     */
     public function testLoadNoSupport()
     {
         $service = $this->getMock(Service::class, [], [], '', false);

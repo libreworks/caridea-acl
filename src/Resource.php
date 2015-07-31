@@ -56,7 +56,7 @@ class Resource
      *
      * @return mixed The resource identifier
      */
-    public function getResourceId()
+    public function getId()
     {
         return $this->id;
     }
@@ -66,7 +66,7 @@ class Resource
      *
      * @return string The resource type
      */
-    public function getResourceType()
+    public function getType()
     {
         return $this->type;
     }

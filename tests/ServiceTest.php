@@ -97,7 +97,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
         $subjects = [Subject::role('admin')];
         
         $object->assert($subjects, 'update', $resource);
-    }    
+    }
 
     /**
      * @covers Caridea\Acl\Service::__construct
@@ -147,7 +147,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($object->can($subjects, 'update', $resource));
         
         $this->verifyMockObjects();
-    }    
+    }
 
     /**
      * @covers Caridea\Acl\Service::__construct

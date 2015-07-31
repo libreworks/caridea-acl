@@ -26,24 +26,24 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @covers Caridea\Acl\Resource::__construct
-     * @covers Caridea\Acl\Resource::getResourceId
+     * @covers Caridea\Acl\Resource::getId
      */
     public function testGetResourceId()
     {
         $id = 123;
         $object = new Resource('foobar', $id);
-        $this->assertEquals($id, $object->getResourceId());
+        $this->assertEquals($id, $object->getId());
     }
 
     /**
      * @covers Caridea\Acl\Resource::__construct
-     * @covers Caridea\Acl\Resource::getResourceType
+     * @covers Caridea\Acl\Resource::getType
      */
     public function testGetResourceType()
     {
         $type = 'foobar';
         $object = new Resource($type, 123);
-        $this->assertEquals($type, $object->getResourceType());
+        $this->assertEquals($type, $object->getType());
     }
 
     /**

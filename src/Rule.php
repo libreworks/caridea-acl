@@ -73,8 +73,8 @@ class Rule
      */
     public function match(Subject $subject, $verb)
     {
-        return $this->subject->getSubjectType() == $subject->getSubjectType() &&
-            $this->subject->getSubjectId() === $subject->getSubjectId() &&
+        return $this->subject->getType() == $subject->getType() &&
+            $this->subject->getId() === $subject->getId() &&
             ($this->verbs === null || in_array($verb, $this->verbs, true));
     }
     

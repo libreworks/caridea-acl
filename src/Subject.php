@@ -56,7 +56,7 @@ class Subject
      *
      * @return string The subject identifier
      */
-    public function getSubjectId()
+    public function getId()
     {
         return $this->id;
     }
@@ -66,7 +66,7 @@ class Subject
      *
      * @return string The subject type
      */
-    public function getSubjectType()
+    public function getType()
     {
         return $this->type;
     }

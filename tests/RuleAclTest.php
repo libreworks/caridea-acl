@@ -97,7 +97,7 @@ class RuleAclTest extends \PHPUnit_Framework_TestCase
      * @covers Caridea\Acl\RuleAcl::hasAllSubjects
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage This ACL does not apply to one of the provided subjects
-     */    
+     */
     public function testCanSubjects()
     {
         $resource = new Resource('foo', 'bar');

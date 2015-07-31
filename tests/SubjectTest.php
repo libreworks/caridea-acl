@@ -26,33 +26,33 @@ class SubjectTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @covers Caridea\Acl\Subject::__construct
-     * @covers Caridea\Acl\Subject::getSubjectId
+     * @covers Caridea\Acl\Subject::getId
      * @covers Caridea\Acl\Subject::principal
-     * @covers Caridea\Acl\Subject::getSubjectType
+     * @covers Caridea\Acl\Subject::getType
      * @covers Caridea\Acl\Subject::__toString
      */
     public function testPrincipal()
     {
         $id = 'foobar';
         $object = Subject::principal($id);
-        $this->assertEquals(Subject::PRINCIPAL, $object->getSubjectType());
-        $this->assertEquals($id, $object->getSubjectId());
+        $this->assertEquals(Subject::PRINCIPAL, $object->getType());
+        $this->assertEquals($id, $object->getId());
         $this->assertEquals('principal:foobar', $object->__toString());
     }
 
     /**
      * @covers Caridea\Acl\Subject::__construct
-     * @covers Caridea\Acl\Subject::getSubjectId
+     * @covers Caridea\Acl\Subject::getId
      * @covers Caridea\Acl\Subject::role
-     * @covers Caridea\Acl\Subject::getSubjectType
+     * @covers Caridea\Acl\Subject::getType
      * @covers Caridea\Acl\Subject::__toString
      */
     public function testRole()
     {
         $id = 'foobar';
         $object = Subject::role($id);
-        $this->assertEquals(Subject::ROLE, $object->getSubjectType());
-        $this->assertEquals($id, $object->getSubjectId());
+        $this->assertEquals(Subject::ROLE, $object->getType());
+        $this->assertEquals($id, $object->getId());
         $this->assertEquals('role:foobar', $object->__toString());
     }
 }
