@@ -28,18 +28,18 @@ namespace Caridea\Acl;
 class DenyAcl implements Acl
 {
     /**
-     * @var \Caridea\Acl\Resource The resource
+     * @var \Caridea\Acl\Target The target
      */
-    private $resource;
+    private $target;
     
     /**
      * Creates a new DenyAcl.
      *
-     * @param \Caridea\Acl\Resource $resource The resource
+     * @param \Caridea\Acl\Target $target The target
      */
-    public function __construct(Resource $resource)
+    public function __construct(Target $target)
     {
-        $this->resource = $resource;
+        $this->target = $target;
     }
     
     /**
@@ -65,12 +65,12 @@ class DenyAcl implements Acl
     }
     
     /**
-     * Gets the Resource for this ACL.
+     * Gets the Target for this ACL.
      *
-     * @return \Caridea\Acl\Resource The resource for this ACL
+     * @return \Caridea\Acl\Target The target for this ACL
      */
-    public function getResource()
+    public function getTarget()
     {
-        return $this->resource;
+        return $this->target;
     }
 }

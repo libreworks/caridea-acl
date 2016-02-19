@@ -49,21 +49,21 @@ class DelegateStrategy implements Strategy
     }
 
     /**
-     * Loads the ACL for a Resource.
+     * Loads the ACL for a Target.
      *
-     * @param \Caridea\Acl\Resource $resource The `Resource` whose ACL will be loaded
+     * @param \Caridea\Acl\Target $target The `Target` whose ACL will be loaded
      * @param \Caridea\Acl\Subject[] $subjects An array of `Subject`s
      * @param \Caridea\Acl\Service $service The calling service (to load parent ACLs)
      * @return \Caridea\Acl\Acl The loaded ACL
-     * @throws \Caridea\Acl\Exception\Unloadable If the resource provided is invalid
+     * @throws \Caridea\Acl\Exception\Unloadable If the target provided is invalid
      */
-    public function load(Resource $resource, array $subjects, Service $service)
+    public function load(Target $target, array $subjects, Service $service)
     {
         foreach ($this->loaders as $loader) {
-            if ($loader->supports($resource)) {
-                return $loader->load($resource, $subjects, $service);
+            if ($loader->supports($target)) {
+                return $loader->load($target, $subjects, $service);
             }
         }
-        return new DenyAcl($resource);
+        return new DenyAcl($target);
     }
 }

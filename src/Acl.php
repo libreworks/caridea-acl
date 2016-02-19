@@ -49,9 +49,9 @@ interface Acl
     public function getParent();
     
     /**
-     * Gets the Resource for this ACL.
+     * Gets the Target for this ACL.
      *
-     * @return \Caridea\Acl\Resource The resource for this ACL
+     * @return \Caridea\Acl\Target The target for this ACL
      */
-    public function getResource();
+    public function getTarget();
 }

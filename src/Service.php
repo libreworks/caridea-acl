@@ -43,37 +43,37 @@ class Service
     }
     
     /**
-     * Asserts that one of the provided subjects can verb the Resource.
+     * Asserts that one of the provided subjects can verb the Target.
      *
      * @param Subject[] $subjects An array of `Subject`s
      * @param string $verb The verb (e.g. `read`, `create`, `delete`)
-     * @param \Caridea\Acl\Resource $resource The resource
-     * @throws Exception\Forbidden if the subject cannot *verb* the Resource
+     * @param \Caridea\Acl\Target $target The target
+     * @throws Exception\Forbidden if the subject cannot *verb* the Target
      */
-    public function assert(array $subjects, $verb, Resource $resource)
+    public function assert(array $subjects, $verb, Target $target)
     {
         try {
-            if ($this->get($resource, $subjects)->can($subjects, $verb)) {
+            if ($this->get($target, $subjects)->can($subjects, $verb)) {
                 return;
             }
         } catch (\Exception $ex) {
-            throw new Exception\Forbidden("Access denied to $verb the resource", 0, $ex);
+            throw new Exception\Forbidden("Access denied to $verb the target", 0, $ex);
         }
-        throw new Exception\Forbidden("Access denied to $verb the resource");
+        throw new Exception\Forbidden("Access denied to $verb the target");
     }
     
     /**
-     * Whether any of the provided subjects has permission to verb the Resource.
+     * Whether any of the provided subjects has permission to verb the Target.
      *
      * @param Subject[] $subjects An array of `Subject`s
      * @param string $verb The verb (e.g. `read`, `create`, `delete`)
-     * @param \Caridea\Acl\Resource $resource The resource
-     * @return bool Whether one of the subjects can *verb* the provided Resource
+     * @param \Caridea\Acl\Target $target The target
+     * @return bool Whether one of the subjects can *verb* the provided Target
      */
-    public function can(array $subjects, $verb, Resource $resource)
+    public function can(array $subjects, $verb, Target $target)
     {
         try {
-            return $this->get($resource, $subjects)->can($subjects, $verb);
+            return $this->get($target, $subjects)->can($subjects, $verb);
         } catch (\Exception $ex) {
             // just return false below
         }
@@ -81,16 +81,16 @@ class Service
     }
     
     /**
-     * Gets an access control list for a Resource.
+     * Gets an access control list for a Target.
      *
-     * @param Resource $resource The Resource whose ACL will be loaded
+     * @param Target $target The Target whose ACL will be loaded
      * @param Subject[] $subjects An array of `Subject`s
      * @return Acl The Acl found
-     * @throws Exception\Unloadable If the resource provided is invalid
+     * @throws Exception\Unloadable If the target provided is invalid
      * @throws \InvalidArgumentException If the `subjects` argument contains invalid values
      */
-    public function get(Resource $resource, array $subjects)
+    public function get(Target $target, array $subjects)
     {
-        return $this->strategy->load($resource, $subjects, $this);
+        return $this->strategy->load($target, $subjects, $this);
     }
 }

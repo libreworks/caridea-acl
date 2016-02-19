@@ -41,10 +41,10 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
             ->willReturn($acl);
         
         $object = new Service($strategy);
-        $resource = new Resource('foo', 'bar');
+        $target = new Target('foo', 'bar');
         $subjects = [Subject::role('admin')];
         
-        $object->assert($subjects, 'update', $resource);
+        $object->assert($subjects, 'update', $target);
         
         $this->verifyMockObjects();
     }
@@ -54,7 +54,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
      * @covers Caridea\Acl\Service::assert
      * @covers Caridea\Acl\Service::get
      * @expectedException \Caridea\Acl\Exception\Forbidden
-     * @expectedExceptionMessage Access denied to update the resource
+     * @expectedExceptionMessage Access denied to update the target
      */
     public function testAssertFalse()
     {
@@ -68,10 +68,10 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
             ->willReturn($acl);
         
         $object = new Service($strategy);
-        $resource = new Resource('foo', 'bar');
+        $target = new Target('foo', 'bar');
         $subjects = [Subject::role('admin')];
         
-        $object->assert($subjects, 'update', $resource);
+        $object->assert($subjects, 'update', $target);
     }
     
     /**
@@ -79,7 +79,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
      * @covers Caridea\Acl\Service::assert
      * @covers Caridea\Acl\Service::get
      * @expectedException \Caridea\Acl\Exception\Forbidden
-     * @expectedExceptionMessage Access denied to update the resource
+     * @expectedExceptionMessage Access denied to update the target
      */
     public function testAssertException()
     {
@@ -93,10 +93,10 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
             ->willReturn($acl);
         
         $object = new Service($strategy);
-        $resource = new Resource('foo', 'bar');
+        $target = new Target('foo', 'bar');
         $subjects = [Subject::role('admin')];
         
-        $object->assert($subjects, 'update', $resource);
+        $object->assert($subjects, 'update', $target);
     }
 
     /**
@@ -116,10 +116,10 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
             ->willReturn($acl);
         
         $object = new Service($strategy);
-        $resource = new Resource('foo', 'bar');
+        $target = new Target('foo', 'bar');
         $subjects = [Subject::role('admin')];
         
-        $this->assertFalse($object->can($subjects, 'update', $resource));
+        $this->assertFalse($object->can($subjects, 'update', $target));
         
         $this->verifyMockObjects();
     }
@@ -141,10 +141,10 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
             ->willReturn($acl);
         
         $object = new Service($strategy);
-        $resource = new Resource('foo', 'bar');
+        $target = new Target('foo', 'bar');
         $subjects = [Subject::role('admin')];
         
-        $this->assertTrue($object->can($subjects, 'update', $resource));
+        $this->assertTrue($object->can($subjects, 'update', $target));
         
         $this->verifyMockObjects();
     }
@@ -162,10 +162,10 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
             ->willReturn($acl);
         
         $object = new Service($strategy);
-        $resource = new Resource('foo', 'bar');
+        $target = new Target('foo', 'bar');
         $subjects = [Subject::role('admin')];
         
-        $this->assertSame($acl, $object->get($resource, $subjects));
+        $this->assertSame($acl, $object->get($target, $subjects));
         
         $this->verifyMockObjects();
     }

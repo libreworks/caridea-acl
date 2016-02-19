@@ -31,7 +31,7 @@ class RuleAclTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructBad1()
     {
-        new RuleAcl(new Resource('foo', 'bar'), ['foo'], []);
+        new RuleAcl(new Target('foo', 'bar'), ['foo'], []);
     }
     
     /**
@@ -41,7 +41,7 @@ class RuleAclTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructBad2()
     {
-        new RuleAcl(new Resource('foo', 'bar'), [], ['foo']);
+        new RuleAcl(new Target('foo', 'bar'), [], ['foo']);
     }
     
     /**
@@ -50,10 +50,10 @@ class RuleAclTest extends \PHPUnit_Framework_TestCase
      */
     public function testCan()
     {
-        $resource = new Resource('foo', 'bar');
+        $target = new Target('foo', 'bar');
         $subjects = [Subject::role('admin')];
         $rules = [Rule::allow($subjects[0], ['read'])];
-        $object = new RuleAcl($resource, $subjects, $rules);
+        $object = new RuleAcl($target, $subjects, $rules);
         
         $this->assertTrue($object->can($subjects, 'read'));
     }
@@ -69,10 +69,10 @@ class RuleAclTest extends \PHPUnit_Framework_TestCase
             ->method('can')
             ->willReturn(true);
         
-        $resource = new Resource('foo', 'bar');
+        $target = new Target('foo', 'bar');
         $subjects = [Subject::role('admin')];
         $rules = [];
-        $object = new RuleAcl($resource, $subjects, $rules, $parent);
+        $object = new RuleAcl($target, $subjects, $rules, $parent);
         
         $this->assertTrue($object->can($subjects, 'read'));
     }
@@ -83,10 +83,10 @@ class RuleAclTest extends \PHPUnit_Framework_TestCase
      */
     public function testCanFalse()
     {
-        $resource = new Resource('foo', 'bar');
+        $target = new Target('foo', 'bar');
         $subjects = [Subject::role('user')];
         $rules = [Rule::allow(Subject::role('admin'), ['update'])];
-        $object = new RuleAcl($resource, $subjects, $rules);
+        $object = new RuleAcl($target, $subjects, $rules);
         
         $this->assertFalse($object->can($subjects, 'read'));
         $this->assertFalse($object->can([], 'read'));
@@ -100,10 +100,10 @@ class RuleAclTest extends \PHPUnit_Framework_TestCase
      */
     public function testCanSubjects()
     {
-        $resource = new Resource('foo', 'bar');
+        $target = new Target('foo', 'bar');
         $subjects = [Subject::role('admin')];
         $rules = [];
-        $object = new RuleAcl($resource, $subjects, $rules);
+        $object = new RuleAcl($target, $subjects, $rules);
         $object->can([Subject::principal('foobar')], 'delete');
     }
     
@@ -115,25 +115,25 @@ class RuleAclTest extends \PHPUnit_Framework_TestCase
     {
         $parent = $this->getMockForAbstractClass(Acl::class);
         
-        $resource = new Resource('foo', 'bar');
+        $target = new Target('foo', 'bar');
         $subjects = [Subject::role('admin')];
         $rules = [Rule::allow($subjects[0], ['read'])];
-        $object = new RuleAcl($resource, $subjects, $rules, $parent);
+        $object = new RuleAcl($target, $subjects, $rules, $parent);
         
         $this->assertSame($parent, $object->getParent());
     }
 
     /**
      * @covers Caridea\Acl\RuleAcl::__construct
-     * @covers Caridea\Acl\RuleAcl::getResource
+     * @covers Caridea\Acl\RuleAcl::getTarget
      */
-    public function testGetResource()
+    public function testGetTarget()
     {
-        $resource = new Resource('foo', 'bar');
+        $target = new Target('foo', 'bar');
         $subjects = [Subject::role('admin')];
         $rules = [Rule::allow($subjects[0], ['read'])];
-        $object = new RuleAcl($resource, $subjects, $rules);
+        $object = new RuleAcl($target, $subjects, $rules);
         
-        $this->assertSame($resource, $object->getResource());
+        $this->assertSame($target, $object->getTarget());
     }
 }

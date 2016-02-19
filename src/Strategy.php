@@ -28,17 +28,17 @@ namespace Caridea\Acl;
 interface Strategy
 {
     /**
-     * Loads the ACL for a Resource.
+     * Loads the ACL for a Target.
      *
      * Implementations *must* return an ACL, never null. If there are no rules
      * available for the subjects provided, return the DenyAcl.
      *
-     * @param \Caridea\Acl\Resource $resource The `Resource` whose ACL will be loaded
+     * @param \Caridea\Acl\Target $target The `Target` whose ACL will be loaded
      * @param \Caridea\Acl\Subject[] $subjects An array of `Subject`s
      * @param \Caridea\Acl\Service $service The ACL service (to load parent ACLs)
      * @return \Caridea\Acl\Acl The loaded ACL
-     * @throws \Caridea\Acl\Exception\Unloadable If the resource provided is invalid
+     * @throws \Caridea\Acl\Exception\Unloadable If the target provided is invalid
      * @throws \InvalidArgumentException If the `subjects` argument contains invalid values
      */
-    public function load(Resource $resource, array $subjects, Service $service);
+    public function load(Target $target, array $subjects, Service $service);
 }

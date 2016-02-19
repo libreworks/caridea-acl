@@ -27,15 +27,15 @@ Our code is intended to comply with [PSR-1](http://www.php-fig.org/psr/psr-1/), 
 
 ## Definitions
 
-Our permission API deals with three concepts: Subjects, Verbs, and Resources.
+Our permission API deals with three concepts: Subjects, Verbs, and Targets.
 
-A *resource* is something that can be protected. It has a type and an identifier. It could be a record from your database, a controller method in your application, or a URL.
+A *target* is something that can be protected. It has a type and an identifier. It could be a record from your database, a controller method in your application, or a URL.
 
 A *subject* is a user or role that can be allowed or denied access. `caridea-acl` ships with two kinds of `Subject`s: *principal* and *role*. For instance, the currently authenticated user has a principal `Subject` with the username, and several role `Subject`s with the role names (e.g. `admin`, `user`, `us-citizen`).
 
-A *verb* is the action the `Subject` can take on the `Resource` (e.g. *read*, *create*, *submit*).
+A *verb* is the action the `Subject` can take on the `Target` (e.g. *read*, *create*, *submit*).
 
-`Resource` and `Subject` are classes, not interfaces. Since we intend ACLs to be immutable and potentially serializable, we'd rather you not add interfaces onto your own domain classes.
+`Target` and `Subject` are classes, not interfaces. Since we intend ACLs to be immutable and potentially serializable, we'd rather you not add interfaces onto your own domain classes.
 
 ## Examples
 
@@ -48,21 +48,21 @@ By writing your own `Loader`s, you control in very fine detail how your permissi
 ```php
 class MyLoader implements \Caridea\Acl\Loader
 {
-    public function supports(Resource $resource)
+    public function supports(Target $target)
     {
-        return $resource->getType() == 'foobar';
+        return $target->getType() == 'foobar';
     }
 
-    public function load(Resource $resource, array $subjects, Service $service)
+    public function load(Target $target, array $subjects, Service $service)
     {
         // some custom method to load my database record
         try {
-            $record = MyRecord::loadFromDatabase($resource->getId());
+            $record = MyRecord::loadFromDatabase($target->getId());
         } catch (\Exception $e) {
             throw new \Caridea\Acl\Exception\Unloadable("Could not load record", 0, $e);
         }
         // load the parent record's ACL
-        $parent = $service->get(new Resource('foobar', $record['parent']), $subjects);
+        $parent = $service->get(new Target('foobar', $record['parent']), $subjects);
         // create the rules and return the final constructed ACL
         $rules = [];
         foreach ($subjects as $subject) {
@@ -80,7 +80,7 @@ class MyLoader implements \Caridea\Acl\Loader
                 $rules[] = Rule::allow($subject, ['create', 'read', 'update', 'delete']);
             }
         }
-        return new RuleAcl($resource, $subjects, $rules, $parent);
+        return new RuleAcl($target, $subjects, $rules, $parent);
     }
 }
 ```
@@ -97,12 +97,12 @@ $strategy = new \Caridea\Acl\CacheStrategy(
 $service = new \Caridea\Acl\Service($strategy);
 
 $subjects = MyClass::getSubjects(); // determine which subjects the user has
-$resource = new Resource('foobar', 123);
+$target = new Target('foobar', 123);
 
-$allowed = $service->can($subjects, 'delete', $resource);
+$allowed = $service->can($subjects, 'delete', $target);
 
 try {
-    $service->assert($subjects, 'delete', $resource);
+    $service->assert($subjects, 'delete', $target);
 } catch (\Caridea\Acl\Exception\Forbidden $e) {
     // not allowed!
 }

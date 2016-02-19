@@ -3,7 +3,6 @@
     "type": "library",
     "description": "A shrimp of an access control library",
     "keywords": ["permissions", "acl", "rbac", "authorization"],
-    "version": "0.2.0-dev",
     "homepage": "http://github.com/libreworks/caridea-acl",
     "license": "Apache-2.0",
     "authors": [
@@ -16,7 +15,7 @@
         "php": ">=5.5.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "~4.6"
+        "phpunit/phpunit": "~5.2"
     },    
     "autoload": {
         "psr-4": {

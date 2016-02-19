@@ -25,7 +25,7 @@ namespace Caridea\Acl;
  * @copyright 2015 LibreWorks contributors
  * @license   http://opensource.org/licenses/Apache-2.0 Apache 2.0 License
  */
-class Resource
+class Target
 {
     /**
      * @var string The resource type
@@ -37,7 +37,7 @@ class Resource
     private $id;
 
     /**
-     * Creates a new Resource.
+     * Creates a new Target.
      *
      * @param string $type The resource type
      * @param mixed $id The resource identifier
@@ -46,7 +46,7 @@ class Resource
     {
         $this->type = (string) $type;
         if (strlen(trim($this->type)) == 0) {
-            throw new \InvalidArgumentException("Resource type can't be blank");
+            throw new \InvalidArgumentException("Target type can't be blank");
         }
         $this->id = $id;
     }

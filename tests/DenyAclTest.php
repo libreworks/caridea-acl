@@ -31,17 +31,17 @@ class DenyAclTest extends \PHPUnit_Framework_TestCase
      */
     protected $object;
     /**
-     * @var Resource
+     * @var Target
      */
-    protected $resource;
+    protected $target;
 
     /**
      * Sets up the fixture
      */
     protected function setUp()
     {
-        $this->resource = new Resource('foo', 'bar');
-        $this->object = new DenyAcl($this->resource);
+        $this->target = new Target('foo', 'bar');
+        $this->object = new DenyAcl($this->target);
     }
 
     /**
@@ -61,10 +61,10 @@ class DenyAclTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Caridea\Acl\DenyAcl::getResource
+     * @covers Caridea\Acl\DenyAcl::getTarget
      */
-    public function testGetResource()
+    public function testGetTarget()
     {
-        $this->assertSame($this->resource, $this->object->getResource());
+        $this->assertSame($this->target, $this->object->getTarget());
     }
 }

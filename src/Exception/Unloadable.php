@@ -20,7 +20,7 @@
 namespace Caridea\Acl\Exception;
 
 /**
- * Exception for when Resources are invalid (e.g. non-existent).
+ * Exception for when Targets are invalid (e.g. non-existent).
  *
  * @copyright 2015 LibreWorks contributors
  * @license   http://opensource.org/licenses/Apache-2.0 Apache 2.0 License

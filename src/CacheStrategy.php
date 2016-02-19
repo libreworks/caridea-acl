@@ -20,7 +20,7 @@
 namespace Caridea\Acl;
 
 /**
- * Caches ACLs based on Resource and Subjects.
+ * Caches ACLs based on Target and Subjects.
  *
  * @copyright 2015 LibreWorks contributors
  * @license   http://opensource.org/licenses/Apache-2.0 Apache 2.0 License
@@ -28,7 +28,7 @@ namespace Caridea\Acl;
 class CacheStrategy implements Strategy
 {
     /**
-     * @var \Caridea\Acl\Acl[] contains the ACLs indexed by Resource and Subjects string
+     * @var \Caridea\Acl\Acl[] contains the ACLs indexed by Target and Subjects string
      */
     protected $cache = [];
     /**
@@ -47,20 +47,20 @@ class CacheStrategy implements Strategy
     }
     
     /**
-     * Loads the ACL for a Resource.
+     * Loads the ACL for a Target.
      *
-     * @param \Caridea\Acl\Resource $resource The `Resource` whose ACL will be loaded
+     * @param \Caridea\Acl\Target $target The `Target` whose ACL will be loaded
      * @param \Caridea\Acl\Subject[] $subjects An array of `Subject`s
      * @param \Caridea\Acl\Service $service The ACL service (to load parent ACLs)
      * @return \Caridea\Acl\Acl The loaded ACL
      * @throws \Caridea\Acl\Exception\Unloadable If the resource provided is invalid
      * @throws \InvalidArgumentException If the `subjects` argument contains invalid values
      */
-    public function load(Resource $resource, array $subjects, Service $service)
+    public function load(Target $target, array $subjects, Service $service)
     {
-        $key = $this->buildKey($resource, $subjects);
+        $key = $this->buildKey($target, $subjects);
         if (!isset($this->cache[$key])) {
-            $acl = $this->delegate->load($resource, $subjects, $service);
+            $acl = $this->delegate->load($target, $subjects, $service);
             $this->cache[$key] = $acl;
         }
         return $this->cache[$key];
@@ -69,14 +69,14 @@ class CacheStrategy implements Strategy
     /**
      * Generates the key to use for caching the ACL.
      *
-     * @param \Caridea\Acl\Resource $resource The `Resource` whose ACL will be loaded
+     * @param \Caridea\Acl\Target $target The `Target` whose ACL will be loaded
      * @param array $subjects An array of `Subject`s
      * @return string The cache key
      * @throws \InvalidArgumentException If the `subjects` argument contains invalid values
      */
-    protected function buildKey(Resource $resource, array $subjects)
+    protected function buildKey(Target $target, array $subjects)
     {
-        $key = (string) $resource;
+        $key = (string) $target;
         foreach ($subjects as $subject) {
             if (!($subject instanceof Subject)) {
                 throw new \InvalidArgumentException("Only instances of Subject are permitted in the subjects argument");

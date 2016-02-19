@@ -28,13 +28,13 @@ namespace Caridea\Acl;
 interface Loader extends Strategy
 {
     /**
-     * Whether this loader supports the Resource provided.
+     * Whether this loader supports the Target provided.
      *
-     * Implementations should only worry about the Resource type. They shouldn't
-     * actually check to see if the Resource ID is valid.
+     * Implementations should only worry about the Target type. They shouldn't
+     * actually check to see if the Target ID is valid.
      *
-     * @param \Caridea\Acl\Resource $resource A resource
-     * @return bool Whether the Resource type is supported
+     * @param \Caridea\Acl\Target $target A target
+     * @return bool Whether the Target type is supported
      */
-    public function supports(Resource $resource);
+    public function supports(Target $target);
 }

@@ -39,11 +39,11 @@ class CacheStrategyTest extends \PHPUnit_Framework_TestCase
             ->willReturn($acl);
 
         $object = new CacheStrategy($delegate);
-        $resource = new Resource('foo', 'bar');
+        $target = new Target('foo', 'bar');
         $subjects = [Subject::role('admin')];
         
-        $this->assertSame($acl, $object->load($resource, $subjects, $service));
-        $this->assertSame($acl, $object->load($resource, $subjects, $service));
+        $this->assertSame($acl, $object->load($target, $subjects, $service));
+        $this->assertSame($acl, $object->load($target, $subjects, $service));
         
         $this->verifyMockObjects();
     }
@@ -61,9 +61,9 @@ class CacheStrategyTest extends \PHPUnit_Framework_TestCase
         $service = $this->getMock(Service::class, [], [], '', false);
         
         $object = new CacheStrategy($delegate);
-        $resource = new Resource('foo', 'bar');
+        $target = new Target('foo', 'bar');
         $subjects = ['not-a-subject'];
         
-        $object->load($resource, $subjects, $service);
+        $object->load($target, $subjects, $service);
     }
 }

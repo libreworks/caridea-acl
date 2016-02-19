@@ -32,9 +32,9 @@ class RuleAcl implements Acl
      */
     private $parent;
     /**
-     * @var \Caridea\Acl\Resource The resource
+     * @var \Caridea\Acl\Target The resource
      */
-    private $resource;
+    private $target;
     /**
      * @var \Caridea\Acl\Subject[] The subjects for which the rules apply
      */
@@ -47,16 +47,16 @@ class RuleAcl implements Acl
     /**
      * Creates a new RuleAcl.
      *
-     * @param \Caridea\Acl\Resource $resource The resource to which this applies
+     * @param \Caridea\Acl\Target $target The resource to which this applies
      * @param \Caridea\Acl\Subject[] $subjects An array of `Subject`s the rules cover
      * @param \Caridea\Acl\Rule[] $rules An array of `Rule`s
      * @param \Caridea\Acl\Acl $parent Optional parent ACL
      * @throws \InvalidArgumentException If subjects contains a non-Subject
      *     value, or if rules contains a non-Rule value
      */
-    public function __construct(Resource $resource, array $subjects, array $rules, Acl $parent = null)
+    public function __construct(Target $target, array $subjects, array $rules, Acl $parent = null)
     {
-        $this->resource = $resource;
+        $this->resource = $target;
         foreach ($subjects as $subject) {
             if (!($subject instanceof Subject)) {
                 throw new \InvalidArgumentException("Only instances of Subject are permitted in the subjects argument");
@@ -118,11 +118,11 @@ class RuleAcl implements Acl
     }
     
     /**
-     * Gets the Resource for this ACL.
+     * Gets the Target for this ACL.
      *
-     * @return \Caridea\Acl\Resource The resource for this ACL
+     * @return \Caridea\Acl\Target The resource for this ACL
      */
-    public function getResource()
+    public function getTarget()
     {
         return $this->resource;
     }

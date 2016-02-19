@@ -46,9 +46,9 @@ class DelegateStrategyTest extends \PHPUnit_Framework_TestCase
         
         $object = new DelegateStrategy([$loader1, $loader2]);
         
-        $resource = new Resource('foo', 'bar');
+        $target = new Target('foo', 'bar');
         $subjects = [Subject::role('admin')];
-        $this->assertSame($acl, $object->load($resource, $subjects, $service));
+        $this->assertSame($acl, $object->load($target, $subjects, $service));
         
         $this->verifyMockObjects();
     }
@@ -67,11 +67,11 @@ class DelegateStrategyTest extends \PHPUnit_Framework_TestCase
         
         $object = new DelegateStrategy([$loader1]);
         
-        $resource = new Resource('foo', 'bar');
+        $target = new Target('foo', 'bar');
         $subjects = [Subject::role('admin')];
         $this->assertInstanceOf(
             DenyAcl::class,
-            $object->load($resource, $subjects, $service)
+            $object->load($target, $subjects, $service)
         );
         
         $this->verifyMockObjects();
