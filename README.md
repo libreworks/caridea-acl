@@ -9,6 +9,8 @@ This is its access control component. You can create lists of permissions from a
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/libreworks/caridea-acl/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/libreworks/caridea-acl/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/libreworks/caridea-acl/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/libreworks/caridea-acl/?branch=master)
 
+We've also included `.hhi` files for the Hack typechecker.
+
 ## Installation
 
 You can install this library using Composer:
@@ -17,7 +19,8 @@ You can install this library using Composer:
 $ composer require caridea/acl
 ```
 
-This project requires PHP 5.5 and has no dependencies.
+* The master branch (version 2.x) of this project requires PHP 7.0 and has no dependencies.
+* Version 1.x of this project requires PHP 5.5 and has no dependencies.
 
 ## Compliance
 

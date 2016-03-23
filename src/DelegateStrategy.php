@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Caridea
  *
@@ -57,7 +58,7 @@ class DelegateStrategy implements Strategy
      * @return \Caridea\Acl\Acl The loaded ACL
      * @throws \Caridea\Acl\Exception\Unloadable If the target provided is invalid
      */
-    public function load(Target $target, array $subjects, Service $service)
+    public function load(Target $target, array $subjects, Service $service): Acl
     {
         foreach ($this->loaders as $loader) {
             if ($loader->supports($target)) {

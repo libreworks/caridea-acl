@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Caridea
  *
@@ -42,7 +43,7 @@ class Target
      * @param string $type The resource type
      * @param mixed $id The resource identifier
      */
-    public function __construct($type, $id)
+    public function __construct(string $type, $id)
     {
         $this->type = (string) $type;
         if (strlen(trim($this->type)) == 0) {
@@ -66,7 +67,7 @@ class Target
      *
      * @return string The resource type
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
@@ -76,7 +77,7 @@ class Target
      *
      * @return string The string representation
      */
-    public function __toString()
+    public function __toString(): string
     {
         return "{$this->type}#{$this->id}";
     }

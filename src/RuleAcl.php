@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Caridea
  *
@@ -78,7 +79,7 @@ class RuleAcl implements Acl
      * @param \Caridea\Acl\Subject[] $subjects a list of subjects
      * @return bool Whether all subjects are covered
      */
-    protected function hasAllSubjects(array $subjects)
+    protected function hasAllSubjects(array $subjects): bool
     {
         return count(array_diff($subjects, $this->subjects)) === 0;
     }
@@ -92,7 +93,7 @@ class RuleAcl implements Acl
      * @param string $verb The verb to test.
      * @return bool True if a subject can perform a verb on this resource
      */
-    public function can(array $subjects, $verb)
+    public function can(array $subjects, string $verb): bool
     {
         if (!$this->hasAllSubjects($subjects)) {
             throw new \InvalidArgumentException("This ACL does not apply to one of the provided subjects");
@@ -122,7 +123,7 @@ class RuleAcl implements Acl
      *
      * @return \Caridea\Acl\Target The resource for this ACL
      */
-    public function getTarget()
+    public function getTarget(): Target
     {
         return $this->resource;
     }

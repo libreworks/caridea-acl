@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Caridea
  *
@@ -47,7 +48,7 @@ class Rule
      * @param bool $allowed Whether this is an allowing rule
      * @param array $verbs Array of verbs, or null for all verbs
      */
-    protected function __construct(Subject $subject, $allowed, array $verbs = null)
+    protected function __construct(Subject $subject, bool $allowed, array $verbs = null)
     {
         $this->subject = $subject;
         $this->allowed = (bool) $allowed;
@@ -59,7 +60,7 @@ class Rule
      *
      * @return bool Whether this is an allowing rule
      */
-    public function isAllowed()
+    public function isAllowed(): bool
     {
         return $this->allowed;
     }
@@ -71,7 +72,7 @@ class Rule
      * @param string $verb The verb to check
      * @return bool Whether this Rule matches the arguments provided
      */
-    public function match(Subject $subject, $verb)
+    public function match(Subject $subject, string $verb): bool
     {
         return $this->subject->getType() == $subject->getType() &&
             $this->subject->getId() === $subject->getId() &&
@@ -86,7 +87,7 @@ class Rule
      *     Empty or `null` means *all*.
      * @return Rule The allowing Rule
      */
-    public static function allow(Subject $subject, array $verbs = null)
+    public static function allow(Subject $subject, array $verbs = null): Rule
     {
         return new self($subject, true, $verbs);
     }
@@ -99,7 +100,7 @@ class Rule
      *     Empty or `null` means *all*.
      * @return Rule The denying Rule
      */
-    public static function deny(Subject $subject, array $verbs = null)
+    public static function deny(Subject $subject, array $verbs = null): Rule
     {
         return new self($subject, false, $verbs);
     }

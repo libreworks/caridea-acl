@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Caridea
  *
@@ -56,7 +57,7 @@ class CacheStrategy implements Strategy
      * @throws \Caridea\Acl\Exception\Unloadable If the resource provided is invalid
      * @throws \InvalidArgumentException If the `subjects` argument contains invalid values
      */
-    public function load(Target $target, array $subjects, Service $service)
+    public function load(Target $target, array $subjects, Service $service): Acl
     {
         $key = $this->buildKey($target, $subjects);
         if (!isset($this->cache[$key])) {
@@ -74,7 +75,7 @@ class CacheStrategy implements Strategy
      * @return string The cache key
      * @throws \InvalidArgumentException If the `subjects` argument contains invalid values
      */
-    protected function buildKey(Target $target, array $subjects)
+    protected function buildKey(Target $target, array $subjects): string
     {
         $key = (string) $target;
         foreach ($subjects as $subject) {

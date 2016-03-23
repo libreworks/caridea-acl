@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Caridea
  *
@@ -49,7 +50,7 @@ class DenyAcl implements Acl
      * @param string $verb The verb to test.
      * @return bool Always returns false
      */
-    public function can(array $subjects, $verb)
+    public function can(array $subjects, string $verb): bool
     {
         return false;
     }
@@ -69,7 +70,7 @@ class DenyAcl implements Acl
      *
      * @return \Caridea\Acl\Target The target for this ACL
      */
-    public function getTarget()
+    public function getTarget(): Target
     {
         return $this->target;
     }

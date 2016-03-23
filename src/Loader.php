@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Caridea
  *
@@ -36,5 +37,5 @@ interface Loader extends Strategy
      * @param \Caridea\Acl\Target $target A target
      * @return bool Whether the Target type is supported
      */
-    public function supports(Target $target);
+    public function supports(Target $target): bool;
 }

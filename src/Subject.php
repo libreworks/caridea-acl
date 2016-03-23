@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Caridea
  *
@@ -45,10 +46,10 @@ class Subject
      * @param string $type The subject type (e.g. "role", "principal")
      * @param string $id The subject identifier
      */
-    protected function __construct($type, $id)
+    protected function __construct(string $type, string $id)
     {
-        $this->type = (string) $type;
-        $this->id = (string) $id;
+        $this->type = $type;
+        $this->id = $id;
     }
 
     /**
@@ -56,7 +57,7 @@ class Subject
      *
      * @return string The subject identifier
      */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
@@ -66,7 +67,7 @@ class Subject
      *
      * @return string The subject type
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
@@ -76,7 +77,7 @@ class Subject
      *
      * @return string The string representation
      */
-    public function __toString()
+    public function __toString(): string
     {
         return "{$this->type}:{$this->id}";
     }
@@ -87,7 +88,7 @@ class Subject
      * @param string $id The subject identifier
      * @return Subject The subject created
      */
-    public static function principal($id)
+    public static function principal(string $id): Subject
     {
         return new self(self::PRINCIPAL, $id);
     }
@@ -98,7 +99,7 @@ class Subject
      * @param string $id The subject identifier
      * @return Subject The subject created
      */
-    public static function role($id)
+    public static function role(string $id): Subject
     {
         return new self(self::ROLE, $id);
     }

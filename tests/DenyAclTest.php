@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Caridea
  *
@@ -49,7 +50,7 @@ class DenyAclTest extends \PHPUnit_Framework_TestCase
      */
     public function testCan()
     {
-        $this->assertFalse($this->object->can([], null));
+        $this->assertFalse($this->object->can([], ''));
     }
 
     /**

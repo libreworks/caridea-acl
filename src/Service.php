@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Caridea
  *
@@ -50,7 +51,7 @@ class Service
      * @param \Caridea\Acl\Target $target The target
      * @throws Exception\Forbidden if the subject cannot *verb* the Target
      */
-    public function assert(array $subjects, $verb, Target $target)
+    public function assert(array $subjects, string $verb, Target $target)
     {
         try {
             if ($this->get($target, $subjects)->can($subjects, $verb)) {
@@ -70,7 +71,7 @@ class Service
      * @param \Caridea\Acl\Target $target The target
      * @return bool Whether one of the subjects can *verb* the provided Target
      */
-    public function can(array $subjects, $verb, Target $target)
+    public function can(array $subjects, string $verb, Target $target): bool
     {
         try {
             return $this->get($target, $subjects)->can($subjects, $verb);
@@ -89,7 +90,7 @@ class Service
      * @throws Exception\Unloadable If the target provided is invalid
      * @throws \InvalidArgumentException If the `subjects` argument contains invalid values
      */
-    public function get(Target $target, array $subjects)
+    public function get(Target $target, array $subjects): Acl
     {
         return $this->strategy->load($target, $subjects, $this);
     }

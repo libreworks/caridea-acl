@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Caridea
  *
@@ -39,7 +40,7 @@ interface Acl
      * @param string $verb The verb to test.
      * @return bool True if a subject can perform a verb on this resource
      */
-    public function can(array $subjects, $verb);
+    public function can(array $subjects, string $verb): bool;
 
     /**
      * Gets the parent ACL.
@@ -53,5 +54,5 @@ interface Acl
      *
      * @return \Caridea\Acl\Target The target for this ACL
      */
-    public function getTarget();
+    public function getTarget(): Target;
 }

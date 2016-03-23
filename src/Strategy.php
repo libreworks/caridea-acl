@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Caridea
  *
@@ -40,5 +41,5 @@ interface Strategy
      * @throws \Caridea\Acl\Exception\Unloadable If the target provided is invalid
      * @throws \InvalidArgumentException If the `subjects` argument contains invalid values
      */
-    public function load(Target $target, array $subjects, Service $service);
+    public function load(Target $target, array $subjects, Service $service): Acl;
 }
