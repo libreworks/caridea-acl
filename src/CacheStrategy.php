@@ -98,7 +98,7 @@ class CacheStrategy implements MultiStrategy
                 foreach ($a as $acl) {
                     $key = $this->buildKey($acl->getTarget(), $subjects);
                     $this->cache[$key] = $acl;
-                    $acls[(string)$target] = $acl;
+                    $acls[(string)$acl->getTarget()] = $acl;
                 }
             }
         } else {

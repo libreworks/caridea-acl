@@ -111,7 +111,11 @@ class CacheStrategyTest extends \PHPUnit_Framework_TestCase
         $target1 = new Target('foo', 'bar');
         $target2 = new Target('foo', 'baz');
         $acl1 = $this->createMock(Acl::class);
+        $acl1->method('getTarget')
+            ->willReturn($target1);
         $acl2 = $this->createMock(Acl::class);
+        $acl2->method('getTarget')
+            ->willReturn($target2);
         $targets = [$target1, $target2];
         $subjects = [Subject::role('admin')];
         $object = new CacheStrategy($delegate);

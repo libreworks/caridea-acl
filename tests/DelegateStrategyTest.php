@@ -124,6 +124,7 @@ class DelegateStrategyTest extends \PHPUnit_Framework_TestCase
         $loader2 = $this->createMock(DelegateStrategyTest_MultiLoader::class);
         $loader2->expects($this->any())
             ->method('supports')
+            ->with($this->equalTo($target1))
             ->willReturn(true);
         $loader2->expects($this->any())
             ->method('loadAll')

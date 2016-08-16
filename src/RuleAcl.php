@@ -57,7 +57,7 @@ class RuleAcl implements Acl
      */
     public function __construct(Target $target, array $subjects, array $rules, Acl $parent = null)
     {
-        $this->resource = $target;
+        $this->target = $target;
         foreach ($subjects as $subject) {
             if (!($subject instanceof Subject)) {
                 throw new \InvalidArgumentException("Only instances of Subject are permitted in the subjects argument");
@@ -116,6 +116,6 @@ class RuleAcl implements Acl
      */
     public function getTarget(): Target
     {
-        return $this->resource;
+        return $this->target;
     }
 }

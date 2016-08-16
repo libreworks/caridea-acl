@@ -115,7 +115,9 @@ class Service
                 $acls[(string)$target] = $this->strategy->load($target, $subjects, $this);
             }
         }
-        $missing = array_diff(array_map(function ($a) {return (string) $a;}, $targets), array_keys($acls));
+        $missing = array_diff(array_map(function ($a) {
+            return (string) $a;
+        }, $targets), array_keys($acls));
         // Check every requested target was found
         if (!empty($missing)) {
             throw new Exception\Unloadable("Unable to load ACL for " . implode(", ", $missing));

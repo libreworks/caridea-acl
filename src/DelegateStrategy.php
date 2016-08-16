@@ -97,7 +97,7 @@ class DelegateStrategy implements MultiStrategy
         $acls = [];
         foreach ($byType as $type => $ttargets) {
             foreach ($this->loaders as $loader) {
-                if ($loader->supports($target)) {
+                if ($loader->supports($ttargets[0])) {
                     if ($loader instanceof MultiStrategy) {
                         $acls = array_merge($acls, $loader->loadAll($ttargets, $subjects, $service));
                     } else {
