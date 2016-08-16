@@ -25,7 +25,7 @@ class Service
         return $this->strategy->load($target, $subjects, $this);
     }
 
-    public function get(array<Target> $targets, array<Subject> $subjects): array<string,Acl>
+    public function getAll(array<Target> $targets, array<Subject> $subjects): array<string,Acl>
     {
         return [];
     }

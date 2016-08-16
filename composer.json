@@ -11,6 +11,9 @@
             "homepage": "https://github.com/libreworks/caridea-acl/contributors"
         }
     ],
+    "branch-alias": {
+        "dev-master": "2.1.x-dev"
+    },
     "require": {
         "php": ">=7.0.0"
     },
