@@ -2,12 +2,12 @@
 
 namespace Caridea\Acl;
 
-class CacheStrategy implements Strategy
+class CacheStrategy implements MultiStrategy
 {
     protected array<Acl> $cache = [];
 
     protected Strategy $delegate;
-    
+
     public function __construct(Strategy $delegate)
     {
         $this->delegate = $delegate;
@@ -18,15 +18,14 @@ class CacheStrategy implements Strategy
         return $this->delegate->load($target, $subjects, $service);
     }
 
-    protected function buildKey(Target $target, array<Subject> $subjects): string
+    public function loadAll(array<Target> $target, array<Subject> $subjects, Service $service): array<string,Acl>
     {
-        $key = (string) $target;
-        foreach ($subjects as $subject) {
-            if (!($subject instanceof Subject)) {
-                throw new \InvalidArgumentException("Only instances of Subject are permitted in the subjects argument");
-            }
-            $key .= ";{$subject}";
-        }
-        return $key;
+        return [];
     }
+
+    protected function buildKey(Target $targets, array<Subject> $subjects): string
+    {
+        return '';
+    }
+
 }

@@ -31,7 +31,7 @@ class DelegateStrategyTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoad()
     {
-        $service = $this->getMock(Service::class, [], [], '', false);
+        $service = $this->createMock(Service::class);
         $acl = $this->getMockForAbstractClass(Acl::class);
         $loader1 = $this->getMockForAbstractClass(Loader::class, ['load', 'supports']);
         $loader1->expects($this->any())
@@ -44,40 +44,122 @@ class DelegateStrategyTest extends \PHPUnit_Framework_TestCase
         $loader2->expects($this->any())
             ->method('load')
             ->willReturn($acl);
-        
+
         $object = new DelegateStrategy([$loader1, $loader2]);
-        
+
         $target = new Target('foo', 'bar');
         $subjects = [Subject::role('admin')];
         $this->assertSame($acl, $object->load($target, $subjects, $service));
-        
+
         $this->verifyMockObjects();
     }
-    
+
+    /**
+     * @covers Caridea\Acl\DelegateStrategy::__construct
+     * @covers Caridea\Acl\DelegateStrategy::loadAll
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Only instances of Target are permitted in the targets argument
+     */
+    public function testLoadAllError()
+    {
+        $object = new DelegateStrategy([]);
+        $service = $this->createMock(Service::class);
+        $object->loadAll([1], [], $service);
+    }
+
+    /**
+     * @covers Caridea\Acl\DelegateStrategy::__construct
+     * @covers Caridea\Acl\DelegateStrategy::loadAll
+     */
+    public function testLoadAllSingle()
+    {
+        $service = $this->createMock(Service::class);
+        $acl1 = $this->getMockForAbstractClass(Acl::class);
+        $acl2 = $this->getMockForAbstractClass(Acl::class);
+        $target1 = new Target('foo', 'bar');
+        $target2 = new Target('foo', 'baz');
+        $targets = [$target1, $target2];
+        $subjects = [Subject::role('admin')];
+
+        $loader1 = $this->getMockForAbstractClass(Loader::class, ['load', 'supports']);
+        $loader1->expects($this->any())
+            ->method('supports')
+            ->willReturn(false);
+        $loader2 = $this->getMockForAbstractClass(Loader::class, ['load', 'supports']);
+        $loader2->expects($this->any())
+            ->method('supports')
+            ->willReturn(true);
+        $loader2->expects($this->any())
+            ->method('load')
+            ->willReturnOnConsecutiveCalls($acl1, $acl2);
+
+        $acls = ['foo#bar' => $acl1, 'foo#baz' => $acl2];
+
+        $object = new DelegateStrategy([$loader1, $loader2]);
+
+        $this->assertEquals($acls, $object->loadAll($targets, $subjects, $service));
+
+        $this->verifyMockObjects();
+    }
+
+    /**
+     * @covers Caridea\Acl\DelegateStrategy::__construct
+     * @covers Caridea\Acl\DelegateStrategy::loadAll
+     */
+    public function testLoadAllMulti()
+    {
+        $service = $this->createMock(Service::class);
+        $acl1 = $this->getMockForAbstractClass(Acl::class);
+        $acl2 = $this->getMockForAbstractClass(Acl::class);
+        $target1 = new Target('foo', 'bar');
+        $target2 = new Target('foo', 'baz');
+        $targets = [$target1, $target2];
+        $subjects = [Subject::role('admin')];
+        $acls = ['foo#bar' => $acl1, 'foo#baz' => $acl2];
+
+        $loader1 = $this->getMockForAbstractClass(Loader::class, ['load', 'supports']);
+        $loader1->expects($this->any())
+            ->method('supports')
+            ->willReturn(false);
+        $loader2 = $this->createMock(DelegateStrategyTest_MultiLoader::class);
+        $loader2->expects($this->any())
+            ->method('supports')
+            ->willReturn(true);
+        $loader2->expects($this->any())
+            ->method('loadAll')
+            ->willReturn($acls);
+
+        $object = new DelegateStrategy([$loader1, $loader2]);
+
+        $this->assertEquals($acls, $object->loadAll($targets, $subjects, $service));
+
+        $this->verifyMockObjects();
+    }
+
     /**
      * @covers Caridea\Acl\DelegateStrategy::__construct
      * @covers Caridea\Acl\DelegateStrategy::load
      */
     public function testLoadNoSupport()
     {
-        $service = $this->getMock(Service::class, [], [], '', false);
+        $service = $this->createMock(Service::class);
         $loader1 = $this->getMockForAbstractClass(Loader::class, ['load', 'supports']);
         $loader1->expects($this->any())
             ->method('supports')
             ->willReturn(false);
-        
+
         $object = new DelegateStrategy([$loader1]);
-        
+
         $target = new Target('foo', 'bar');
         $subjects = [Subject::role('admin')];
         $this->assertInstanceOf(
             DenyAcl::class,
             $object->load($target, $subjects, $service)
         );
-        
+
         $this->verifyMockObjects();
     }
-    
+
     /**
      * @covers Caridea\Acl\DelegateStrategy::__construct
      * @expectedException \InvalidArgumentException
@@ -87,4 +169,8 @@ class DelegateStrategyTest extends \PHPUnit_Framework_TestCase
     {
         new DelegateStrategy(['foo']);
     }
+}
+
+interface DelegateStrategyTest_MultiLoader extends Loader, MultiStrategy
+{
 }

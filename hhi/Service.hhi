@@ -5,7 +5,7 @@ namespace Caridea\Acl;
 class Service
 {
     private Strategy $strategy;
-    
+
     public function __construct(Strategy $strategy)
     {
         $this->strategy = $strategy;
@@ -19,9 +19,14 @@ class Service
     {
         return false;
     }
-    
+
     public function get(Target $target, array<Subject> $subjects): Acl
     {
         return $this->strategy->load($target, $subjects, $this);
+    }
+
+    public function get(array<Target> $targets, array<Subject> $subjects): array<string,Acl>
+    {
+        return [];
     }
 }

@@ -26,7 +26,7 @@ namespace Caridea\Acl;
  * @copyright 2015-2016 LibreWorks contributors
  * @license   http://opensource.org/licenses/Apache-2.0 Apache 2.0 License
  */
-class DelegateStrategy implements Strategy
+class DelegateStrategy implements MultiStrategy
 {
     /**
      * @var SplFixedArray<\Caridea\Acl\Loader> The loaders to consult
@@ -46,7 +46,9 @@ class DelegateStrategy implements Strategy
                 throw new \InvalidArgumentException("Only instances of Loader are permitted in the loaders argument");
             }
         }
-        $this->loaders = \SplFixedArray::fromArray($loaders);
+        // HHVM appears to use max() inside of FixedArray which bails when empty
+        $this->loaders = empty($loaders) ?
+            new \SplFixedArray() : \SplFixedArray::fromArray($loaders);
     }
 
     /**
@@ -66,5 +68,47 @@ class DelegateStrategy implements Strategy
             }
         }
         return new DenyAcl($target);
+    }
+
+    /**
+     * Loads the ACLs for several Targets.
+     *
+     * @since 2.1.0
+     * @param \Caridea\Acl\Target[] $targets The `Target` whose ACL will be loaded
+     * @param \Caridea\Acl\Subject[] $subjects An array of `Subject`s
+     * @param \Caridea\Acl\Service $service The ACL service (to load parent ACLs)
+     * @return array<string,\Caridea\Acl\Acl> The loaded ACLs
+     * @throws \Caridea\Acl\Exception\Unloadable If the target provided is invalid
+     * @throws \InvalidArgumentException If the `subjects` argument contains invalid values
+     */
+    public function loadAll(array $targets, array $subjects, Service $service): array
+    {
+        $byType = [];
+        foreach ($targets as $target) {
+            if (!($target instanceof Target)) {
+                throw new \InvalidArgumentException("Only instances of Target are permitted in the targets argument");
+            }
+            $type = $target->getType();
+            if (!isset($byType[$type])) {
+                $byType[$type] = [];
+            }
+            $byType[$type][] = $target;
+        }
+        $acls = [];
+        foreach ($byType as $type => $ttargets) {
+            foreach ($this->loaders as $loader) {
+                if ($loader->supports($target)) {
+                    if ($loader instanceof MultiStrategy) {
+                        $acls = array_merge($acls, $loader->loadAll($ttargets, $subjects, $service));
+                    } else {
+                        foreach ($ttargets as $target) {
+                            $acls[(string)$target] = $loader->load($target, $subjects, $service);
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        return $acls;
     }
 }

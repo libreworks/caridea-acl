@@ -32,7 +32,7 @@ class Service
      * @var Strategy The loading strategy
      */
     private $strategy;
-    
+
     /**
      * Creates a new Service.
      *
@@ -42,7 +42,7 @@ class Service
     {
         $this->strategy = $strategy;
     }
-    
+
     /**
      * Asserts that one of the provided subjects can verb the Target.
      *
@@ -62,7 +62,7 @@ class Service
         }
         throw new Exception\Forbidden("Access denied to $verb the target");
     }
-    
+
     /**
      * Whether any of the provided subjects has permission to verb the Target.
      *
@@ -80,7 +80,7 @@ class Service
         }
         return false;
     }
-    
+
     /**
      * Gets an access control list for a Target.
      *
@@ -93,5 +93,33 @@ class Service
     public function get(Target $target, array $subjects): Acl
     {
         return $this->strategy->load($target, $subjects, $this);
+    }
+
+    /**
+     * Gets access control lists for several Targets.
+     *
+     * @since 2.1.0
+     * @param \Caridea\Acl\Target[] $targets The `Target` whose ACL will be loaded
+     * @param \Caridea\Acl\Subject[] $subjects An array of `Subject`s
+     * @return array<string,\Caridea\Acl\Acl> The loaded ACLs
+     * @throws \Caridea\Acl\Exception\Unloadable If the target provided is invalid
+     * @throws \InvalidArgumentException If the `targets` or `subjects` argument contains invalid values
+     */
+    public function getAll(array $targets, array $subjects): array
+    {
+        $acls = [];
+        if ($this->strategy instanceof MultiStrategy) {
+            $acls = $this->strategy->loadAll($targets, $subjects, $this);
+        } else {
+            foreach ($targets as $target) {
+                $acls[(string)$target] = $this->strategy->load($target, $subjects, $this);
+            }
+        }
+        $missing = array_diff(array_map(function ($a) {return (string) $a;}, $targets), array_keys($acls));
+        // Check every requested target was found
+        if (!empty($missing)) {
+            throw new Exception\Unloadable("Unable to load ACL for " . implode(", ", $missing));
+        }
+        return $acls;
     }
 }

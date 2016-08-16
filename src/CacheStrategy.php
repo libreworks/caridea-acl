@@ -26,17 +26,17 @@ namespace Caridea\Acl;
  * @copyright 2015-2016 LibreWorks contributors
  * @license   http://opensource.org/licenses/Apache-2.0 Apache 2.0 License
  */
-class CacheStrategy implements Strategy
+class CacheStrategy implements MultiStrategy
 {
     /**
-     * @var \Caridea\Acl\Acl[] contains the ACLs indexed by Target and Subjects string
+     * @var array<string,\Caridea\Acl\Acl> contains the ACLs indexed by Target and Subjects string
      */
     protected $cache = [];
     /**
      * @var \Caridea\Acl\Strategy The actual loading strategy
      */
     protected $delegate;
-    
+
     /**
      * Creates a new CacheStrategy.
      *
@@ -46,7 +46,7 @@ class CacheStrategy implements Strategy
     {
         $this->delegate = $delegate;
     }
-    
+
     /**
      * Loads the ACL for a Target.
      *
@@ -66,7 +66,52 @@ class CacheStrategy implements Strategy
         }
         return $this->cache[$key];
     }
-    
+
+    /**
+     * Loads the ACLs for several Targets.
+     *
+     * @since 2.1.0
+     * @param \Caridea\Acl\Target[] $targets The `Target` whose ACL will be loaded
+     * @param \Caridea\Acl\Subject[] $subjects An array of `Subject`s
+     * @param \Caridea\Acl\Service $service The ACL service (to load parent ACLs)
+     * @return array<string,\Caridea\Acl\Acl> The loaded ACLs
+     * @throws \Caridea\Acl\Exception\Unloadable If the target provided is invalid
+     * @throws \InvalidArgumentException If the `subjects` argument contains invalid values
+     */
+    public function loadAll(array $targets, array $subjects, Service $service): array
+    {
+        $acls = [];
+        if ($this->delegate instanceof MultiStrategy) {
+            $oids = array_merge($targets);
+            foreach ($targets as $i => $target) {
+                if (!($target instanceof Target)) {
+                    throw new \InvalidArgumentException("Only instances of Target are permitted in the targets argument");
+                }
+                $key = $this->buildKey($target, $subjects);
+                if (isset($this->cache[$key])) {
+                    $acls[(string)$target] = $this->cache[$key];
+                    unset($oids[$i]);
+                }
+            }
+            if (!empty($oids)) {
+                $a = $this->delegate->loadAll($oids, $subjects, $service);
+                foreach ($a as $acl) {
+                    $key = $this->buildKey($acl->getTarget(), $subjects);
+                    $this->cache[$key] = $acl;
+                    $acls[(string)$target] = $acl;
+                }
+            }
+        } else {
+            foreach ($targets as $target) {
+                if (!($target instanceof Target)) {
+                    throw new \InvalidArgumentException("Only instances of Target are permitted in the targets argument");
+                }
+                $acls[(string) $target] = $this->load($target, $subjects, $service);
+            }
+        }
+        return $acls;
+    }
+
     /**
      * Generates the key to use for caching the ACL.
      *

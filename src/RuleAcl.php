@@ -44,7 +44,7 @@ class RuleAcl implements Acl
      * @var array Associative array of verb to list of Subjects granted access
      */
     private $rules = [];
-    
+
     /**
      * Creates a new RuleAcl.
      *
@@ -72,7 +72,7 @@ class RuleAcl implements Acl
         $this->rules = $rules;
         $this->parent = $parent;
     }
-    
+
     /**
      * Determines whether this ACL has rules for all of the provided subjects.
      *
@@ -83,15 +83,9 @@ class RuleAcl implements Acl
     {
         return count(array_diff($subjects, $this->subjects)) === 0;
     }
-    
+
     /**
-     * Tests whether any of the subjects can perform the provided verb.
-     *
-     * The parent ACL will be consulted if this one has no corresponding rules.
-     *
-     * @param \Caridea\Acl\Subject[] $subjects A non-empty array of subjects.
-     * @param string $verb The verb to test.
-     * @return bool True if a subject can perform a verb on this resource
+     * {@inheritDoc}
      */
     public function can(array $subjects, string $verb): bool
     {
@@ -109,19 +103,16 @@ class RuleAcl implements Acl
     }
 
     /**
-     * Gets the parent ACL.
-     *
-     * @return \Caridea\Acl\Acl The parent ACL or null
+     * {@inheritDoc}
+     * @return \Caridea\Acl\Acl|null The parent ACL or `null`
      */
     public function getParent()
     {
         return $this->parent;
     }
-    
+
     /**
-     * Gets the Target for this ACL.
-     *
-     * @return \Caridea\Acl\Target The resource for this ACL
+     * {@inheritDoc}
      */
     public function getTarget(): Target
     {

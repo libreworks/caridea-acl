@@ -32,7 +32,7 @@ class CacheStrategyTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoad()
     {
-        $service = $this->getMock(Service::class, [], [], '', false);
+        $service = $this->createMock(Service::class);
         $acl = $this->getMockForAbstractClass(Acl::class);
         $delegate = $this->getMockForAbstractClass(Strategy::class);
         $delegate->expects($this->once())
@@ -42,10 +42,10 @@ class CacheStrategyTest extends \PHPUnit_Framework_TestCase
         $object = new CacheStrategy($delegate);
         $target = new Target('foo', 'bar');
         $subjects = [Subject::role('admin')];
-        
+
         $this->assertSame($acl, $object->load($target, $subjects, $service));
         $this->assertSame($acl, $object->load($target, $subjects, $service));
-        
+
         $this->verifyMockObjects();
     }
 
@@ -59,12 +59,106 @@ class CacheStrategyTest extends \PHPUnit_Framework_TestCase
     public function testLoadBad()
     {
         $delegate = $this->getMockForAbstractClass(Strategy::class);
-        $service = $this->getMock(Service::class, [], [], '', false);
-        
+        $service = $this->createMock(Service::class);
+
         $object = new CacheStrategy($delegate);
         $target = new Target('foo', 'bar');
         $subjects = ['not-a-subject'];
-        
+
         $object->load($target, $subjects, $service);
+    }
+
+    /**
+     * @covers Caridea\Acl\CacheStrategy::__construct
+     * @covers Caridea\Acl\CacheStrategy::load
+     * @covers Caridea\Acl\CacheStrategy::loadAll
+     * @covers Caridea\Acl\CacheStrategy::buildKey
+     */
+    public function testLoadAllSingle()
+    {
+        $delegate = $this->getMockForAbstractClass(Strategy::class);
+        $service = $this->createMock(Service::class);
+
+        $target1 = new Target('foo', 'bar');
+        $target2 = new Target('foo', 'baz');
+        $acl1 = $this->createMock(Acl::class);
+        $acl2 = $this->createMock(Acl::class);
+        $targets = [$target1, $target2];
+        $subjects = [Subject::role('admin')];
+        $object = new CacheStrategy($delegate);
+
+        $acls = ['foo#bar' => $acl1, 'foo#baz' => $acl2];
+
+        $delegate->expects($this->any())
+            ->method('load')
+            ->willReturnOnConsecutiveCalls($acl1, $acl2);
+
+        $this->assertEquals($acls, $object->loadAll($targets, $subjects, $service));
+
+        $this->verifyMockObjects();
+    }
+
+    /**
+     * @covers Caridea\Acl\CacheStrategy::__construct
+     * @covers Caridea\Acl\CacheStrategy::loadAll
+     * @covers Caridea\Acl\CacheStrategy::buildKey
+     */
+    public function testLoadAllMulti()
+    {
+        $delegate = $this->getMockForAbstractClass(MultiStrategy::class);
+        $service = $this->createMock(Service::class);
+
+        $target1 = new Target('foo', 'bar');
+        $target2 = new Target('foo', 'baz');
+        $acl1 = $this->createMock(Acl::class);
+        $acl2 = $this->createMock(Acl::class);
+        $targets = [$target1, $target2];
+        $subjects = [Subject::role('admin')];
+        $object = new CacheStrategy($delegate);
+
+        $acls = ['foo#bar' => $acl1, 'foo#baz' => $acl2];
+
+        $delegate->expects($this->any())
+            ->method('loadAll')
+            ->willReturn(['foo#baz' => $acl2]);
+
+        $rc = new \ReflectionClass(CacheStrategy::class);
+        $rp = $rc->getProperty('cache');
+        $rp->setAccessible(true);
+        $rp->setValue($object, ['foo#bar;role:admin' => $acl1]);
+
+        $this->assertEquals($acls, $object->loadAll($targets, $subjects, $service));
+
+        $this->verifyMockObjects();
+    }
+
+    /**
+     * @covers Caridea\Acl\CacheStrategy::__construct
+     * @covers Caridea\Acl\CacheStrategy::loadAll
+     * @covers Caridea\Acl\CacheStrategy::buildKey
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Only instances of Target are permitted in the targets argument
+     */
+    public function testLoadAllBad1()
+    {
+        $delegate = $this->getMockForAbstractClass(Strategy::class);
+        $service = $this->createMock(Service::class);
+        $object = new CacheStrategy($delegate);
+        $object->loadAll([1], [], $service);
+    }
+
+    /**
+     * @covers Caridea\Acl\CacheStrategy::__construct
+     * @covers Caridea\Acl\CacheStrategy::loadAll
+     * @covers Caridea\Acl\CacheStrategy::buildKey
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Only instances of Target are permitted in the targets argument
+     */
+    public function testLoadAllBad2()
+    {
+        $delegate = $this->getMockForAbstractClass(MultiStrategy::class);
+        $service = $this->createMock(Service::class);
+        $object = new CacheStrategy($delegate);
+        $object->loadAll([1], [], $service);
     }
 }

@@ -45,10 +45,10 @@ interface Acl
     /**
      * Gets the parent ACL.
      *
-     * @return \Caridea\Acl\Acl The parent ACL or null
+     * @return \Caridea\Acl\Acl|null The parent ACL or `null`
      */
     public function getParent();
-    
+
     /**
      * Gets the Target for this ACL.
      *

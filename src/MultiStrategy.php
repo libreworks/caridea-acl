@@ -21,25 +21,27 @@ declare(strict_types=1);
 namespace Caridea\Acl;
 
 /**
- * Implements the logic of finding and retrieving an ACL.
+ * Implements the logic of finding and retrieving multiple ACLs
  *
  * @copyright 2015-2016 LibreWorks contributors
  * @license   http://opensource.org/licenses/Apache-2.0 Apache 2.0 License
+ * @since 2.1.0
  */
-interface Strategy
+interface MultiStrategy extends Strategy
 {
     /**
-     * Loads the ACL for a Target.
+     * Loads the ACLs for several Targets.
      *
-     * Implementations *must* return an ACL, never `null`. If there are no rules
-     * available for the subjects provided, return the `DenyAcl`.
+     * Implementations *must* return an array with no entries equal to `null`.
+     * If there are no rules available for the subjects provided, return the
+     * `DenyAcl`.
      *
-     * @param \Caridea\Acl\Target $target The `Target` whose ACL will be loaded
+     * @param \Caridea\Acl\Target[] $targets The `Target`s whose ACLs will be loaded
      * @param \Caridea\Acl\Subject[] $subjects An array of `Subject`s
      * @param \Caridea\Acl\Service $service The ACL service (to load parent ACLs)
-     * @return \Caridea\Acl\Acl The loaded ACL
+     * @return array<string,\Caridea\Acl\Acl> Associative array; keys are targets, values are ACLs
      * @throws \Caridea\Acl\Exception\Unloadable If the target provided is invalid
      * @throws \InvalidArgumentException If the `subjects` argument contains invalid values
      */
-    public function load(Target $target, array $subjects, Service $service): Acl;
+    public function loadAll(array $targets, array $subjects, Service $service): array;
 }

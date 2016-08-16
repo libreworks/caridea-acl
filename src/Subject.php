@@ -30,7 +30,7 @@ class Subject
 {
     const PRINCIPAL = 'principal';
     const ROLE = 'role';
-    
+
     /**
      * @var string The subject type
      */
@@ -39,7 +39,7 @@ class Subject
      * @var string The subject identifier
      */
     private $id;
-    
+
     /**
      * Creates a new BasicSubject.
      *
@@ -71,7 +71,7 @@ class Subject
     {
         return $this->type;
     }
-    
+
     /**
      * Gets a string representation of this subject.
      *
@@ -81,18 +81,18 @@ class Subject
     {
         return "{$this->type}:{$this->id}";
     }
-    
+
     /**
      * Gets a Subject for a principal (such as a username).
      *
      * @param string $id The subject identifier
-     * @return Subject The subject created
+     * @return Subject The subject created!
      */
     public static function principal(string $id): Subject
     {
         return new self(self::PRINCIPAL, $id);
     }
-    
+
     /**
      * Gets a Subject for a role.
      *

@@ -32,7 +32,7 @@ class DenyAcl implements Acl
      * @var \Caridea\Acl\Target The target
      */
     private $target;
-    
+
     /**
      * Creates a new DenyAcl.
      *
@@ -42,12 +42,9 @@ class DenyAcl implements Acl
     {
         $this->target = $target;
     }
-    
+
     /**
-     * Tests whether any of the subjects can perform the provided verb.
-     *
-     * @param \Caridea\Acl\Subject[] $subjects A non-empty array of subjects.
-     * @param string $verb The verb to test.
+     * {@inheritDoc}
      * @return bool Always returns false
      */
     public function can(array $subjects, string $verb): bool
@@ -56,19 +53,16 @@ class DenyAcl implements Acl
     }
 
     /**
-     * Gets the parent ACL.
-     *
-     * @return \Caridea\Acl\Acl The parent ACL or null
+     * {@inheritDoc}
+     * @return \Caridea\Acl\Acl|null The parent ACL or `null`
      */
     public function getParent()
     {
         return null;
     }
-    
+
     /**
-     * Gets the Target for this ACL.
-     *
-     * @return \Caridea\Acl\Target The target for this ACL
+     * {@inheritDoc}
      */
     public function getTarget(): Target
     {

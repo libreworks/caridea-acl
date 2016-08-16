@@ -40,13 +40,13 @@ class Rule
      * @var bool Whether the Subject is allowed or forbidden
      */
     private $allowed;
-    
+
     /**
      * Creates a new Rule.
      *
      * @param \Caridea\Acl\Subject $subject The subject
      * @param bool $allowed Whether this is an allowing rule
-     * @param array $verbs Array of verbs, or null for all verbs
+     * @param array<string>|null $verbs Array of verbs, or `null` for all verbs
      */
     protected function __construct(Subject $subject, bool $allowed, array $verbs = null)
     {
@@ -54,7 +54,7 @@ class Rule
         $this->allowed = (bool) $allowed;
         $this->verbs = empty($verbs) ? null : $verbs;
     }
-    
+
     /**
      * Gets whether this is an allowing rule.
      *
@@ -64,7 +64,7 @@ class Rule
     {
         return $this->allowed;
     }
-    
+
     /**
      * Gets whether this Rule matches the `Subject` and verb provided.
      *
@@ -78,12 +78,12 @@ class Rule
             $this->subject->getId() === $subject->getId() &&
             ($this->verbs === null || in_array($verb, $this->verbs, true));
     }
-    
+
     /**
      * Creates an allowing Rule.
      *
      * @param \Caridea\Acl\Subject $subject The subject to allow access
-     * @param array $verbs Optional list of allowed verbs.
+     * @param array<string>|null $verbs Optional list of allowed verbs.
      *     Empty or `null` means *all*.
      * @return Rule The allowing Rule
      */
@@ -91,12 +91,12 @@ class Rule
     {
         return new self($subject, true, $verbs);
     }
-    
+
     /**
      * Creates an denying Rule.
      *
      * @param \Caridea\Acl\Subject $subject The subject to allow access
-     * @param array $verbs Optional list of denied verbs.
+     * @param array<string>|null $verbs Optional list of denied verbs.
      *     Empty or `null` means *all*.
      * @return Rule The denying Rule
      */

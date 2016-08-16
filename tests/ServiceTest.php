@@ -40,16 +40,16 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
         $strategy->expects($this->once())
             ->method('load')
             ->willReturn($acl);
-        
+
         $object = new Service($strategy);
         $target = new Target('foo', 'bar');
         $subjects = [Subject::role('admin')];
-        
+
         $object->assert($subjects, 'update', $target);
-        
+
         $this->verifyMockObjects();
     }
-    
+
     /**
      * @covers Caridea\Acl\Service::__construct
      * @covers Caridea\Acl\Service::assert
@@ -67,14 +67,14 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
         $strategy->expects($this->once())
             ->method('load')
             ->willReturn($acl);
-        
+
         $object = new Service($strategy);
         $target = new Target('foo', 'bar');
         $subjects = [Subject::role('admin')];
-        
+
         $object->assert($subjects, 'update', $target);
     }
-    
+
     /**
      * @covers Caridea\Acl\Service::__construct
      * @covers Caridea\Acl\Service::assert
@@ -92,11 +92,11 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
         $strategy->expects($this->once())
             ->method('load')
             ->willReturn($acl);
-        
+
         $object = new Service($strategy);
         $target = new Target('foo', 'bar');
         $subjects = [Subject::role('admin')];
-        
+
         $object->assert($subjects, 'update', $target);
     }
 
@@ -115,16 +115,16 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
         $strategy->expects($this->once())
             ->method('load')
             ->willReturn($acl);
-        
+
         $object = new Service($strategy);
         $target = new Target('foo', 'bar');
         $subjects = [Subject::role('admin')];
-        
+
         $this->assertFalse($object->can($subjects, 'update', $target));
-        
+
         $this->verifyMockObjects();
     }
-    
+
     /**
      * @covers Caridea\Acl\Service::__construct
      * @covers Caridea\Acl\Service::can
@@ -140,13 +140,13 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
         $strategy->expects($this->once())
             ->method('load')
             ->willReturn($acl);
-        
+
         $object = new Service($strategy);
         $target = new Target('foo', 'bar');
         $subjects = [Subject::role('admin')];
-        
+
         $this->assertTrue($object->can($subjects, 'update', $target));
-        
+
         $this->verifyMockObjects();
     }
 
@@ -161,13 +161,84 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
         $strategy->expects($this->once())
             ->method('load')
             ->willReturn($acl);
-        
+
         $object = new Service($strategy);
         $target = new Target('foo', 'bar');
         $subjects = [Subject::role('admin')];
-        
+
         $this->assertSame($acl, $object->get($target, $subjects));
-        
+
         $this->verifyMockObjects();
+    }
+
+    /**
+     * @covers Caridea\Acl\Service::__construct
+     * @covers Caridea\Acl\Service::getAll
+     */
+    public function testGetAllSingle()
+    {
+        $acl = $this->getMockForAbstractClass(Acl::class);
+        $strategy = $this->getMockForAbstractClass(Strategy::class);
+        $strategy->expects($this->once())
+            ->method('load')
+            ->willReturn($acl);
+
+        $object = new Service($strategy);
+        $target = new Target('foo', 'bar');
+        $targets = [$target];
+        $subjects = [Subject::role('admin')];
+
+        $acls = ['foo#bar' => $acl];
+
+        $this->assertEquals($acls, $object->getAll($targets, $subjects));
+
+        $this->verifyMockObjects();
+    }
+
+    /**
+     * @covers Caridea\Acl\Service::__construct
+     * @covers Caridea\Acl\Service::getAll
+     */
+    public function testGetAllMulti()
+    {
+        $acl = $this->getMockForAbstractClass(Acl::class);
+        $strategy = $this->getMockForAbstractClass(MultiStrategy::class);
+        $strategy->expects($this->once())
+            ->method('loadAll')
+            ->willReturn(['foo#bar' => $acl]);
+
+        $object = new Service($strategy);
+        $target = new Target('foo', 'bar');
+        $targets = [$target];
+        $subjects = [Subject::role('admin')];
+
+        $acls = ['foo#bar' => $acl];
+
+        $this->assertEquals($acls, $object->getAll($targets, $subjects));
+
+        $this->verifyMockObjects();
+    }
+
+    /**
+     * @covers Caridea\Acl\Service::__construct
+     * @covers Caridea\Acl\Service::getAll
+     * @expectedException \Caridea\Acl\Exception\Unloadable
+     * @expectedExceptionMessage Unable to load ACL for foo#bar, foo#baz
+     */
+    public function testGetAllMissing()
+    {
+        $acl = $this->getMockForAbstractClass(Acl::class);
+        $strategy = $this->getMockForAbstractClass(MultiStrategy::class);
+        $strategy->expects($this->once())
+            ->method('loadAll')
+            ->willReturn([]);
+
+        $object = new Service($strategy);
+        $target1 = new Target('foo', 'bar');
+        $target2 = new Target('foo', 'baz');
+        $targets = [$target1, $target2];
+        $subjects = [Subject::role('admin')];
+
+        $object->getAll($targets, $subjects);
     }
 }
