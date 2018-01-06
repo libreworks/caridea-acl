@@ -41,7 +41,7 @@ class RuleAcl implements Acl
      */
     private $subjects;
     /**
-     * @var array Associative array of verb to list of Subjects granted access
+     * @var Rule[] The rules
      */
     private $rules = [];
 
