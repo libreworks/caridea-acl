@@ -15,16 +15,16 @@ declare(strict_types=1);
  * License for the specific language governing permissions and limitations under
  * the License.
  *
- * @copyright 2015-2016 LibreWorks contributors
- * @license   http://opensource.org/licenses/Apache-2.0 Apache 2.0 License
+ * @copyright 2015-2018 LibreWorks contributors
+ * @license   Apache-2.0
  */
 namespace Caridea\Acl;
 
 /**
  * An immutable, serializable list of access rules.
  *
- * @copyright 2015-2016 LibreWorks contributors
- * @license   http://opensource.org/licenses/Apache-2.0 Apache 2.0 License
+ * @copyright 2015-2018 LibreWorks contributors
+ * @license   Apache-2.0
  */
 class RuleAcl implements Acl
 {
@@ -51,11 +51,11 @@ class RuleAcl implements Acl
      * @param \Caridea\Acl\Target $target The resource to which this applies
      * @param \Caridea\Acl\Subject[] $subjects An array of `Subject`s the rules cover
      * @param \Caridea\Acl\Rule[] $rules An array of `Rule`s
-     * @param \Caridea\Acl\Acl $parent Optional parent ACL
+     * @param \Caridea\Acl\Acl|null $parent Optional parent ACL
      * @throws \InvalidArgumentException If subjects contains a non-Subject
      *     value, or if rules contains a non-Rule value
      */
-    public function __construct(Target $target, array $subjects, array $rules, Acl $parent = null)
+    public function __construct(Target $target, array $subjects, array $rules, ?Acl $parent = null)
     {
         $this->target = $target;
         foreach ($subjects as $subject) {
@@ -104,9 +104,8 @@ class RuleAcl implements Acl
 
     /**
      * {@inheritDoc}
-     * @return \Caridea\Acl\Acl|null The parent ACL or `null`
      */
-    public function getParent()
+    public function getParent(): ?Acl
     {
         return $this->parent;
     }

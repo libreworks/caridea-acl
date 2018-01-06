@@ -10,8 +10,6 @@ This is its access control component. You can create lists of permissions from a
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/libreworks/caridea-acl/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/libreworks/caridea-acl/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/libreworks/caridea-acl/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/libreworks/caridea-acl/?branch=master)
 
-We've also included `.hhi` files for the Hack typechecker.
-
 ## Installation
 
 You can install this library using Composer:
@@ -20,7 +18,8 @@ You can install this library using Composer:
 $ composer require caridea/acl
 ```
 
-* The master branch (version 2.x) of this project requires PHP 7.0 and has no dependencies.
+* The master branch (version 3.x) of this project requires PHP 7.1 and has no dependencies.
+* Version 2.x of this project requires PHP 7.0 and has no dependencies.
 * Version 1.x of this project requires PHP 5.5 and has no dependencies.
 
 ## Compliance
@@ -43,9 +42,9 @@ A *verb* is the action the `Subject` can take on the `Target` (e.g. *read*, *cre
 
 ## Examples
 
-You must create your own ACL loaders. We include absolutely no logic to store and retrieve ACLs. 
+You must create your own ACL loaders. We include absolutely no logic to store and retrieve ACLs.
 
-Why? Well, in our experience, the larger an application gets, the less efficient it is to serialize and store ACLs for any record that might have permissions. We've found that most of the time an application's business rules are determined by record attributes, such as who's created what record, who's the manager of a department, and so on. 
+Why? Well, in our experience, the larger an application gets, the less efficient it is to serialize and store ACLs for any record that might have permissions. We've found that most of the time an application's business rules are determined by record attributes, such as who's created what record, who's the manager of a department, and so on.
 
 By writing your own `Loader`s, you control in very fine detail how your permission model is provided.
 
@@ -113,5 +112,3 @@ try {
 ```
 
 You might consider wiring up all your loaders and the `Service` class using dependency injection, for instance with `caridea/container`.
-
-

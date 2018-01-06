@@ -15,8 +15,8 @@ declare(strict_types=1);
  * License for the specific language governing permissions and limitations under
  * the License.
  *
- * @copyright 2015-2016 LibreWorks contributors
- * @license   http://opensource.org/licenses/Apache-2.0 Apache 2.0 License
+ * @copyright 2015-2018 LibreWorks contributors
+ * @license   Apache-2.0
  */
 namespace Caridea\Acl;
 
@@ -25,7 +25,7 @@ namespace Caridea\Acl;
  *
  * @covers Caridea\Acl\DenyAcl
  */
-class DenyAclTest extends \PHPUnit_Framework_TestCase
+class DenyAclTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var DenyAcl
