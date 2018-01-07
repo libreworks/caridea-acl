@@ -6,3 +6,5 @@ This is its access control component. You can create lists of permissions from a
 
 * [Definitions](01-definitions.md)
 * [Access Control Lists](02-acls.md)
+* [Strategies and Loaders](03-strategies.md)
+* [Examples](04-example.md)
